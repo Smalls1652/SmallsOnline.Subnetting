@@ -1,4 +1,4 @@
-[CmdletBinding()]
+[CmdletBinding(DefaultParameterSetName = "AllVersions")]
 param(
     [Parameter(Position = 0, ParameterSetName = "SpecificVersions")]
     [ValidateSet(
