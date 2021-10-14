@@ -84,7 +84,3 @@ PS > [SmallsOnline.Subnetting.Lib.Core.Calculator]::GetWildCardBytes(21) # Get t
 PS > [SmallsOnline.Subnetting.Lib.Core.Calculator]::GetWildCardBytes(21) -join "." # Get the wildcard mask of a /21 network and make it a readable string
 0.0.7.255
 ```
-
-### ⚠️ Testing requirements
-
-If you're going through the PowerShell way, you'll need a version of PowerShell that supports
