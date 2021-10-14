@@ -16,9 +16,11 @@ This repository is for a C# class library to perform subnetting of IPv4 address 
 
 ### 🔨 Build
 
-Right now the compiled library is in the default folder:
+Right now the compiled library is in the default folders for their respective framework:
 
-`src/SmallsOnline.Subnetting.Lib/bin/Debug/net5.0/publish/`
+- `src/SmallsOnline.Subnetting.Lib/bin/Debug/net5.0/publish/`
+- `src/SmallsOnline.Subnetting.Lib/bin/Debug/netstandard2.1/publish/`
+- `src/SmallsOnline.Subnetting.Lib/bin/Debug/netframework4.5/publish/`
 
 The compiled library will be called: `SmallsOnline.Subnetting.Lib.dll`
 
@@ -30,15 +32,32 @@ The compiled library will be called: `SmallsOnline.Subnetting.Lib.dll`
 #### Manually building
 
 1. Launch a terminal and navigate to the source code directory.
-2. Run `dotnet publish`.
+2. Run `dotnet restore`
+3. Run `dotnet publish --framework [framework-version]`.
+    - Replace `[framework-version]` with one of the following:
+      - `net5.0` for .NET 5.0
+      - `netstandard2.1` for .NET Standard 2.1
+      - `netframework4.5` for .NET Framework 4.5
     - Be sure to run `dotnet clean` if you're rebuilding.
-    - You do not need to run `dotnet restore` beforehand. `dotnet publish` implies that a restore will be done before it builds.
 
 ## 🏃🪠🚽 Testing
 
 My current methods for testing the library is by importing the compiled DLL into a PowerShell console (I'm using PowerShell 7.1) and manually checking if certain things are working. I've made a PowerShell script called `importDll.ps1` at the root of the source directory to do all of that. From there I can test methods and creation of objects directly from PowerShell.
 
-For example, after importing the DLL, I can do something like this:
+Depending on the version of PowerShell you're running, you'll need to run it with one of these parameters:
+
+```powershell
+# For PowerShell 7.1 and higher
+PS > .\importDll.ps1
+
+# For PowerShell 7 (Possibly PowerShell 6.2?)
+PS > .\importDll.ps1 -FrameworkVersion "netstandard2.1"
+
+# For Windows PowerShell 5.1 (Included with Windows 10)
+PS > .\importDll.ps1 -FrameworkVersion "netframework4.5"
+```
+
+After importing the DLL, you can do something like this:
 
 ```powershell
 PS > [SmallsOnline.Subnetting.Lib.Core.Calculator]::GetMaxAddresses(26) # Get the max addresses for a /26 network
@@ -65,3 +84,7 @@ PS > [SmallsOnline.Subnetting.Lib.Core.Calculator]::GetWildCardBytes(21) # Get t
 PS > [SmallsOnline.Subnetting.Lib.Core.Calculator]::GetWildCardBytes(21) -join "." # Get the wildcard mask of a /21 network and make it a readable string
 0.0.7.255
 ```
+
+### ⚠️ Testing requirements
+
+If you're going through the PowerShell way, you'll need a version of PowerShell that supports
