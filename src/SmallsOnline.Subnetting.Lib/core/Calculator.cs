@@ -43,7 +43,7 @@ namespace SmallsOnline.Subnetting.Lib.Core
 
             // Get the amount of bytes filled.
             // This is calculated by getting the log of the max addresses from the base of 256 and rounding to the lowest number.
-            double bytesFilled = Math.Round(Math.Log(maxAddresses, 256), MidpointRounding.ToZero);
+            double bytesFilled = Math.Floor(Math.Log(maxAddresses, 256));
 
             // Get the amount of bits used.
             // This is calculated by: maxAddresses / 256^bytesFilled

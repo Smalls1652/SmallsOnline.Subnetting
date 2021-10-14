@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;netstandard2.1;netframework4.5</TargetFrameworks>
     <LangVersion>9.0</LangVersion>
     <PackageId>SmallsOnline.Subnetting.Lib</PackageId>
     <Authors>Timothy Small</Authors>
