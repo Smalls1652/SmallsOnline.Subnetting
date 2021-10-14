@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 
 namespace SmallsOnline.Subnetting.Lib.Core
@@ -70,6 +72,129 @@ namespace SmallsOnline.Subnetting.Lib.Core
             }
 
             return wildcardByteArray;
+        }
+
+        public static IPAddress GetBroadcastAddress(IPAddress networkAddress, double cidrNotation)
+        {
+            // Create an empty byte array for the broadcast address.
+            byte[] broadcastAddressBytes = new byte[4];
+
+            // Get the bytes for the wildcard subnet mask.
+            byte[] networkAddressBytes = networkAddress.GetAddressBytes();
+            byte[] wildcardBytes = GetWildCardBytes(cidrNotation);
+
+            // Iterate through each index of the network address bytes and add the amount from the wildcard bytes.
+            for (int i = 0; i < broadcastAddressBytes.Length; i++)
+            {
+                broadcastAddressBytes[i] = (byte)(networkAddressBytes[i] + wildcardBytes[i]);
+            }
+
+            return new(broadcastAddressBytes);
+        }
+
+        public static IPAddress GetSubnetBoundary(IPAddress ipAddress, double cidrNotation)
+        {
+            // Get the bytes of both the provided IP address and the subnet mask.
+            byte[] ipAddressBytes = ipAddress.GetAddressBytes();
+            byte[] subnetMaskBytes = GetSubnetMask(cidrNotation).GetAddressBytes();
+
+            // Get the position and value of the smallest subnet mask byte.
+            int smallestSubnetMaskBytePosition = GetSmallestBytePosition(subnetMaskBytes);
+            byte smallestSubnetMaskByte = GetSmallestByte(subnetMaskBytes);
+
+            // Get the least significant bit of the smallest subnet mask byte.
+            int[] bitValues = GetBitsUsed(smallestSubnetMaskByte);
+            int leastSignificantBit = bitValues[^1];
+
+            // Find the nearest byte in the IP address to ensure that it's in the right boundary.
+            int nearestByte = 0;
+            for (int i = 0; i <= ipAddressBytes[smallestSubnetMaskBytePosition]; i++)
+            {
+                if (i % leastSignificantBit == 0)
+                {
+                    nearestByte = i;
+                }
+            }
+
+            // Create the new subnet boundary bytes.
+            byte[] subnetBoundaryBytes = new byte[4];
+            for (int i = 0; i < ipAddressBytes.Length; i++)
+            {
+                // If the current loop index is not equal to the position of the smallest subnet mask byte:
+                // - Add the current IP address byte.
+                // If it is:
+                // - Add the nearest byte.
+                if (i != smallestSubnetMaskBytePosition)
+                {
+                    subnetBoundaryBytes[i] = ipAddressBytes[i];
+                }
+                else
+                {
+                    subnetBoundaryBytes[i] = (byte)nearestByte;
+                }
+            }
+
+            // Create the boundary IP address.
+            IPAddress subnetBoundary = new(subnetBoundaryBytes);
+
+            return subnetBoundary;
+        }
+
+        private static byte GetSmallestByte(byte[] byteArray)
+        {
+            // Loop through each index of the byte array.
+            byte smallestByte = 0;
+            for (int i = 0; i < byteArray.Length; i++)
+            {
+                // If the value of the index is not equal to 0 or 255, then set it as the smallest byte.
+                if (byteArray[i] != byte.MinValue && byteArray[i] != byte.MaxValue)
+                {
+                    smallestByte = byteArray[i];
+                }
+            }
+
+            return smallestByte;
+        }
+
+        private static int GetSmallestBytePosition(byte[] byteArray)
+        {
+            // Loop through each index of the byte array.
+            int smallestBytePosition = 0;
+            for (int i = 0; i < byteArray.Length; i++)
+            {
+                // If the value of the index is not equal to 0 or 255, then set the current loop index as the smallest byte position.
+                if (byteArray[i] != byte.MinValue && byteArray[i] != byte.MaxValue)
+                {
+                    smallestBytePosition = i;
+                }
+            }
+
+            return smallestBytePosition;
+        }
+
+        private static int[] GetBitsUsed(byte byteItem)
+        {
+            // Create a BitArray of the byte.
+            BitArray bitArray = new(new byte[] { byteItem });
+
+            // Iterate through each index of the bit array.
+            // The loop goes in reverse.
+            List<int> bitValues = new();
+            for (int i = bitArray.Length - 1; i >= 0; i--)
+            {
+                // Convert the value of the item to an integer, which will either be a 0 or 1.
+                int bitValue = Convert.ToInt32(bitArray[i]);
+
+                // If the bit value is not 0, then add the full value of that bit.
+                if (bitValue != 0)
+                {
+                    // 2^i
+                    int bitValueEnriched = (int)Math.Pow(2, i);
+                    bitValues.Add(bitValueEnriched);
+                }
+            }
+
+            return bitValues.ToArray();
         }
 
         private static double GetBitBlockFromCidr(double cidrNotation)
