@@ -12,6 +12,12 @@ namespace SmallsOnline.Subnetting.Lib.Models
             Initialize(netAddress, cidrNotation);
         }
 
+        public Subnet(string netAddress)
+        {
+            ParsedNetAddressString parsedNetAddress = new(netAddress);
+            Initialize(parsedNetAddress.IPAddress, parsedNetAddress.CidrNotation);
+        }
+
         public IPAddress NetworkAddress
         {
             get => _networkAddress;
