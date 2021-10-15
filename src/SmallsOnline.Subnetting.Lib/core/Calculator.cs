@@ -104,9 +104,7 @@ namespace SmallsOnline.Subnetting.Lib.Core
             SmallestByte smallestSubnetMaskByte = new(subnetMaskBytes);
 
             // Get the least significant bit of the smallest subnet mask byte.
-            Console.WriteLine(smallestSubnetMaskByte.Value);
             int[] bitValues = GetBitsUsed(smallestSubnetMaskByte.Value);
-            Console.WriteLine(bitValues);
             int leastSignificantBit = bitValues[^1];
 
             // Find the nearest byte in the IP address to ensure that it's in the right boundary.
