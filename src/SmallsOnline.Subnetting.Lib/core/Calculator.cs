@@ -5,6 +5,8 @@ using System.Net;
 
 namespace SmallsOnline.Subnetting.Lib.Core
 {
+    using Models;
+
     public static class Calculator
     {
         // Define the max amount of bits that can be used.
@@ -99,16 +101,17 @@ namespace SmallsOnline.Subnetting.Lib.Core
             byte[] subnetMaskBytes = GetSubnetMask(cidrNotation).GetAddressBytes();
 
             // Get the position and value of the smallest subnet mask byte.
-            int smallestSubnetMaskBytePosition = GetSmallestBytePosition(subnetMaskBytes);
-            byte smallestSubnetMaskByte = GetSmallestByte(subnetMaskBytes);
+            SmallestByte smallestSubnetMaskByte = new(subnetMaskBytes);
 
             // Get the least significant bit of the smallest subnet mask byte.
-            int[] bitValues = GetBitsUsed(smallestSubnetMaskByte);
+            Console.WriteLine(smallestSubnetMaskByte.Value);
+            int[] bitValues = GetBitsUsed(smallestSubnetMaskByte.Value);
+            Console.WriteLine(bitValues);
             int leastSignificantBit = bitValues[^1];
 
             // Find the nearest byte in the IP address to ensure that it's in the right boundary.
             int nearestByte = 0;
-            for (int i = 0; i <= ipAddressBytes[smallestSubnetMaskBytePosition]; i++)
+            for (int i = 0; i <= ipAddressBytes[smallestSubnetMaskByte.Position]; i++)
             {
                 if (i % leastSignificantBit == 0)
                 {
@@ -124,7 +127,7 @@ namespace SmallsOnline.Subnetting.Lib.Core
                 // - Add the current IP address byte.
                 // If it is:
                 // - Add the nearest byte.
-                if (i != smallestSubnetMaskBytePosition)
+                if (i != smallestSubnetMaskByte.Position)
                 {
                     subnetBoundaryBytes[i] = ipAddressBytes[i];
                 }
@@ -138,38 +141,6 @@ namespace SmallsOnline.Subnetting.Lib.Core
             IPAddress subnetBoundary = new(subnetBoundaryBytes);
 
             return subnetBoundary;
-        }
-
-        private static byte GetSmallestByte(byte[] byteArray)
-        {
-            // Loop through each index of the byte array.
-            byte smallestByte = 0;
-            for (int i = 0; i < byteArray.Length; i++)
-            {
-                // If the value of the index is not equal to 0 or 255, then set it as the smallest byte.
-                if (byteArray[i] != byte.MinValue && byteArray[i] != byte.MaxValue)
-                {
-                    smallestByte = byteArray[i];
-                }
-            }
-
-            return smallestByte;
-        }
-
-        private static int GetSmallestBytePosition(byte[] byteArray)
-        {
-            // Loop through each index of the byte array.
-            int smallestBytePosition = 0;
-            for (int i = 0; i < byteArray.Length; i++)
-            {
-                // If the value of the index is not equal to 0 or 255, then set the current loop index as the smallest byte position.
-                if (byteArray[i] != byte.MinValue && byteArray[i] != byte.MaxValue)
-                {
-                    smallestBytePosition = i;
-                }
-            }
-
-            return smallestBytePosition;
         }
 
         private static int[] GetBitsUsed(byte byteItem)
