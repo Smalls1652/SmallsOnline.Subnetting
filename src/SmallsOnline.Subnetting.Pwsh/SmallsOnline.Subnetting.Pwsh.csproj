@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PackageId>SmallsOnline.Subnetting.Pwsh</PackageId>
     <Authors>Timothy Small</Authors>
@@ -15,8 +15,7 @@
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <ProjectReference Include="..\SmallsOnline.Subnetting.Lib\SmallsOnline.Subnetting.Lib.csproj" />
   </ItemGroup>
-
 </Project>
