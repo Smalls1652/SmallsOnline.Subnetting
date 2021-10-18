@@ -105,7 +105,10 @@ namespace SmallsOnline.Subnetting.Lib.Core
 
             // Get the least significant bit of the smallest subnet mask byte.
             int[] bitValues = GetBitsUsed(smallestSubnetMaskByte.Value);
-            int leastSignificantBit = bitValues[^1];
+
+            // Can't use ^1 for the last index of an array yet, so I have to do it the old way.
+            // Gonna work on backporting System.Index and System.Range for netstandard2.0 targets.
+            int leastSignificantBit = bitValues[bitValues.Length - 1];
 
             // Find the nearest byte in the IP address to ensure that it's in the right boundary.
             int nearestByte = 0;
