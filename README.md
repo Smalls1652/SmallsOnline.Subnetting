@@ -19,8 +19,7 @@ This repository is for a C# class library to perform subnetting of IPv4 address 
 Right now the compiled library is in the default folders for their respective framework:
 
 - `src/SmallsOnline.Subnetting.Lib/bin/Debug/net5.0/publish/`
-- `src/SmallsOnline.Subnetting.Lib/bin/Debug/netstandard2.1/publish/`
-- `src/SmallsOnline.Subnetting.Lib/bin/Debug/netframework4.5/publish/`
+- `src/SmallsOnline.Subnetting.Lib/bin/Debug/netstandard2.0/publish/`
 
 The compiled library will be called: `SmallsOnline.Subnetting.Lib.dll`
 
@@ -36,8 +35,7 @@ The compiled library will be called: `SmallsOnline.Subnetting.Lib.dll`
 3. Run `dotnet publish --framework [framework-version]`.
     - Replace `[framework-version]` with one of the following:
       - `net5.0` for .NET 5.0
-      - `netstandard2.1` for .NET Standard 2.1
-      - `netframework4.5` for .NET Framework 4.5
+      - `netstandard2.0` for .NET Standard 2.0 (Supports .NET Framework 4.6.1 and higher)
     - Be sure to run `dotnet clean` if you're rebuilding.
 
 ## 🏃🪠🚽 Testing
@@ -50,11 +48,8 @@ Depending on the version of PowerShell you're running, you'll need to run it wit
 # For PowerShell 7.1 and higher
 PS > .\importDll.ps1
 
-# For PowerShell 7 (Possibly PowerShell 6.2?)
-PS > .\importDll.ps1 -FrameworkVersion "netstandard2.1"
-
-# For Windows PowerShell 5.1 (Included with Windows 10)
-PS > .\importDll.ps1 -FrameworkVersion "netframework4.5"
+# For Windows PowerShell 5.1 and higher
+PS > .\importDll.ps1 -FrameworkVersion "netstandard2.0"
 ```
 
 After importing the DLL, you can do something like this:
