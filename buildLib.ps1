@@ -3,8 +3,7 @@ param(
     [Parameter(Position = 0, ParameterSetName = "SpecificVersions")]
     [ValidateSet(
         "net5.0",
-        "netstandard2.1",
-        "netframework4.5"
+        "netstandard2.0"
     )]
     [string[]]$FrameworkVersion = "net5.0",
     [Parameter(Position = 0, ParameterSetName = "AllVersions")]
@@ -16,8 +15,7 @@ switch ($PSCmdlet.ParameterSetName) {
     "AllVersions" {
         $frameworkVersions = @(
             "net5.0",
-            "netstandard2.1",
-            "netframework4.5"
+            "netstandard2.0"
         )
         break
     }
