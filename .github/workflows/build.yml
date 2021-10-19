@@ -23,6 +23,10 @@ jobs:
   build-pwsh-module:
     name: Build PowerShell module
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        framework: [ 'netstandard2.0' ]
+        configuration: [ 'Release' ]
     env:
       DOTNET_NOLOGO: true
     steps:
@@ -35,8 +39,8 @@ jobs:
       - name: Run 'dotnet restore'
         run: dotnet restore "SmallsOnline.Subnetting.Pwsh.sln"
       - name: Run 'dotnet publish'
-        run: dotnet publish "SmallsOnline.Subnetting.Pwsh.sln" --framework "netstandard2.0"
+        run: dotnet publish "SmallsOnline.Subnetting.Pwsh.sln" --configuration ${{ matrix.configuration }} --framework ${{ matrix.framework }}
       - name: Run module build script
         shell: pwsh
         run: |
-          .\buildModule.ps1 -ConfigurationName Release -SkipDotnetBuild
+          .\buildModule.ps1 -ConfigurationName ${{ matrix.configuration }} -SkipDotnetBuild
