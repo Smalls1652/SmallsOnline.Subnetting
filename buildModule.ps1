@@ -7,7 +7,9 @@ param(
     )]
     [string]$ConfigurationName = "Debug",
     [Parameter(Position = 1)]
-    [switch]$CreateBuildArtifact
+    [switch]$CreateBuildArtifact,
+    [Parameter(Position = 2)]
+    [switch]$SkipDotnetBuild
 )
 
 $writeInfoSplat = @{
@@ -64,6 +66,7 @@ if ($CreateBuildArtifact) {
     }
 }
 
+if ($SkipDotnetBuild -eq $false) {
 # Compile the C# projects.
 Write-Information @writeInfoSplat -MessageData "- Compiling C# projects."
 Write-Information @writeInfoSplat -MessageData "`t- Running 'dotnet restore'."
@@ -74,6 +77,7 @@ dotnet clean "$($pwshSlnFilePath)" --nologo --verbosity "quiet"
 
 Write-Information @writeInfoSplat -MessageData "`t- Running 'dotnet publish'."
 dotnet publish "$($pwshSlnFilePath)" --framework "netstandard2.0" --configuration "Release" --no-restore --nologo --verbosity "quiet"
+}
 
 # Copy the required DLL files to the compiled module directory.
 Write-Information @writeInfoSplat -MessageData "- Populating compiled module directory."
