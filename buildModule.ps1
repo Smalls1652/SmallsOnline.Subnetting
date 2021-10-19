@@ -24,8 +24,8 @@ $compiledModuleDirPath = Join-Path -Path $buildDirPath -ChildPath "SmallsOnline.
 $pwshSlnFilePath = Join-Path -Path $scriptRoot -ChildPath "SmallsOnline.Subnetting.Pwsh.sln" # The solution file for the PowerShell binary module project.
 $coreModuleManifestPath = Join-Path -Path $scriptRoot -ChildPath "src\SmallsOnline.Subnetting.Pwsh.ModuleManifest\SmallsOnline.Subnetting.Pwsh.psd1" # The module manifest file.
 $compiledBinaryFiles = @(
-    (Join-Path -Path $scriptRoot -ChildPath "src\SmallsOnline.Subnetting.Pwsh\bin\Release\netstandard2.0\publish\SmallsOnline.Subnetting.Lib.dll"),
-    (Join-Path -Path $scriptRoot -ChildPath "src\SmallsOnline.Subnetting.Pwsh\bin\Release\netstandard2.0\publish\SmallsOnline.Subnetting.Pwsh.dll")
+    (Join-Path -Path $scriptRoot -ChildPath "src\SmallsOnline.Subnetting.Pwsh\bin\$($ConfigurationName)\netstandard2.0\publish\SmallsOnline.Subnetting.Lib.dll"),
+    (Join-Path -Path $scriptRoot -ChildPath "src\SmallsOnline.Subnetting.Pwsh\bin\$($ConfigurationName)\netstandard2.0\publish\SmallsOnline.Subnetting.Pwsh.dll")
 )
 
 if ($CreateBuildArtifact) {
