@@ -17,9 +17,9 @@ jobs:
         with:
           dotnet-version: '5.0.x'
       - name: Run 'dotnet restore'
-        run: dotnet restore "SmallsOnline.Subnetting.sln"
+        run: dotnet restore "SmallsOnline.Subnetting.Lib.sln"
       - name: Run 'dotnet publish'
-        run: dotnet publish "SmallsOnline.Subnetting.sln" --framework ${{ matrix.framework }}
+        run: dotnet publish "SmallsOnline.Subnetting.Lib.sln" --framework ${{ matrix.framework }}
   build-pwsh-module:
     name: Build PowerShell module
     runs-on: ubuntu-latest
