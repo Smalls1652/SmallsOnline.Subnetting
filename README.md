@@ -4,6 +4,15 @@ _**A C#-based subnet calculator**_
 
 This repository is for a C# class library to perform subnetting of IPv4 address spaces. It is currently a work-in-progress.
 
+## 🧱 Build Status
+
+This is the current status of the builds for the two core branches when new commits are pushed:
+
+| Branch | Status |
+| ------ | ------ |
+| **main** | [![Build](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml) |
+| **dev** | [![Build](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml/badge.svg?branch=dev&event=push)](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml) |
+
 ## 🏗️ Building the library
 
 ### 🧰 Prerequisites
