@@ -18,5 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmallsOnline.Subnetting.Lib\SmallsOnline.Subnetting.Lib.csproj" />
+    <None Update="SmallsOnline.Subnetting.Pwsh.psd1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
