@@ -12,14 +12,63 @@
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
-  </ItemGroup>
+  <PropertyGroup>
+    <DirSeparator>$([System.IO.Path]::DirectorySeparatorChar)</DirSeparator>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin$(DirSeparator)Debug$(DirSeparator)</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin$(DirSeparator)Release$(DirSeparator)</OutputPath>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmallsOnline.Subnetting.Lib\SmallsOnline.Subnetting.Lib.csproj" />
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <ProjectReference Include="..$(DirSeparator)SmallsOnline.Subnetting.Lib$(DirSeparator)SmallsOnline.Subnetting.Lib.csproj" />
     <None Update="SmallsOnline.Subnetting.Pwsh.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="BuildModuleDir">
+    <PropertyGroup>
+      <BuildDir_Path>$(MSBuildStartupDirectory)$(DirSeparator)build</BuildDir_Path>
+      <ModuleDir_Path>$(BuildDir_Path)$(DirSeparator)SmallsOnline.Subnetting.Pwsh</ModuleDir_Path>
+    </PropertyGroup>
+    <ItemGroup>
+      <CompiledModuleFiles Include="$(OutputPath)publish$(DirSeparator)*.*" />
+    </ItemGroup>
+
+    <Message
+      Text="Creating the fully compiled module directory..."
+      Importance="high"
+    />
+
+    <MakeDir
+      Directories="$(BuildDir_Path)"
+      Condition="!Exists('$(BuildDirPath)')"
+    />
+
+    <RemoveDir
+      Directories="$(ModuleDir_Path)"
+      Condition="Exists('$(ModuleDirPath)')"
+    />
+    <MakeDir
+      Directories="$(ModuleDir_Path)"
+    />
+
+    <Message
+      Text="$(OutputPath)publish$(DirSeparator)*.* -> $(ModuleDir_Path)"
+      Importance="high"
+    />
+    <Copy
+      SourceFiles="@(CompiledModuleFiles)"
+      DestinationFolder="$(ModuleDir_Path)"
+    />
+  </Target>
 </Project>
