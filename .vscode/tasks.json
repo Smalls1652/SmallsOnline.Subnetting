@@ -1,0 +1,83 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build: SmallsOnline.Subnetting.Lib",
+            "detail": "Build the SmallsOnline.Subnetting.Lib class library.",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "./SmallsOnline.Subnetting.Lib.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build: SmallsOnline.Subnetting.Pwsh",
+            "detail": "Build the SmallsOnline.Subnetting.Pwsh binary module.",
+            "group": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "msbuild",
+                "SmallsOnline.Subnetting.Pwsh.sln",
+                "-target:Restore;Clean;Build;Publish;BuildModuleDir",
+                "-property:Configuration=${input:projectConfigType};DebugType=${input:buildDebugType};DebugSymbols=${input:buildDebugSymbols}",
+                "-noLogo",
+                "/property:GenerateFullPaths=true"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "projectConfigType",
+            "description": "What build config do you want to use?",
+            "options": [
+                "Debug",
+                "Release"
+            ],
+            "default": "Debug"
+        },
+        {
+            "type": "pickString",
+            "id": "buildDebugType",
+            "description": "What level of debug info do you want generated?",
+            "options": [
+                "full",
+                "pdbonly",
+                "portable",
+                "embedded",
+                "none"
+            ],
+            "default": "none"
+        },
+        {
+            "type": "pickString",
+            "id": "buildDebugSymbols",
+            "description": "Do you want to generate debug symbols?",
+            "options": [
+                "true",
+                "false"
+            ],
+            "default": "false"
+        }
+    ]
+}
