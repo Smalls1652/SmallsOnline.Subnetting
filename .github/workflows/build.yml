@@ -25,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        framework: [ 'netstandard2.0' ]
         configuration: [ 'Release' ]
     env:
       DOTNET_NOLOGO: true
@@ -39,4 +38,4 @@ jobs:
       - name: Run 'dotnet restore'
         run: dotnet restore "SmallsOnline.Subnetting.Pwsh.sln"
       - name: Run MSBuild
-        run: dotnet msbuild "SmallsOnline.Subnetting.Pwsh.sln" -target:"Restore;Clean;Build;Publish;BuildModuleDir" -property:"Configuration=${{ matrix.configuration }};DebugType=none;DebugSymbols=false;TargetFrameworkVersion=${{ matrix.framework }}"
+        run: dotnet msbuild "SmallsOnline.Subnetting.Pwsh.sln" -target:"Restore;Clean;Build;Publish;BuildModuleDir" -property:"Configuration=${{ matrix.configuration }};DebugType=none;DebugSymbols=false"
