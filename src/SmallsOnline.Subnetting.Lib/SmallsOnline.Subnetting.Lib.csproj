@@ -9,6 +9,7 @@
     <RepositoryUrl>https://github.com/Smalls1652/SmallsOnline.Subnetting</RepositoryUrl>
     <VersionPrefix>2021.10.00</VersionPrefix>
     <VersionSuffix>alpha-01</VersionSuffix>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 
 </Project>
