@@ -37,7 +37,7 @@
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "focus": false,
+                "focus": true,
                 "panel": "shared",
                 "showReuseMessage": true,
                 "clear": true
@@ -67,7 +67,7 @@
                 "embedded",
                 "none"
             ],
-            "default": "none"
+            "default": "full"
         },
         {
             "type": "pickString",
@@ -77,7 +77,7 @@
                 "true",
                 "false"
             ],
-            "default": "false"
+            "default": "true"
         }
     ]
 }
