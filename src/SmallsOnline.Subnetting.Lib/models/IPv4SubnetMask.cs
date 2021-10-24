@@ -4,8 +4,15 @@ using System.Collections.Generic;
 
 namespace SmallsOnline.Subnetting.Lib.Models
 {
+    /// <summary>
+    /// A representation of an IPv4 subnet mask.
+    /// </summary>
     public class IPv4SubnetMask
     {
+        /// <summary>
+        /// Create from a CIDR notation.
+        /// </summary>
+        /// <param name="cidr">The CIDR notation of the subnet mask.</param>
         public IPv4SubnetMask(double cidr)
         {
             wildcardMask = GetWildcardMask_FromCidr(cidr);
@@ -14,6 +21,10 @@ namespace SmallsOnline.Subnetting.Lib.Models
             totalAddresses = (int)GetMaxAddresses_FromCidr(cidr);
         }
 
+        /// <summary>
+        /// Create from a byte array.
+        /// </summary>
+        /// <param name="bytes">The byte array of the subnet mask.</param>
         public IPv4SubnetMask(byte[] bytes)
         {
             octets = GetOctets_FromBytes(bytes);
@@ -22,21 +33,33 @@ namespace SmallsOnline.Subnetting.Lib.Models
             totalAddresses = GetTotalAddresses_FromSubnetMask(GetLastUsedOctet());
         }
 
+        /// <summary>
+        /// The octets of the subnet mask.
+        /// </summary>
         public Octet[] Octets
         {
             get => octets;
         }
 
+        /// <summary>
+        /// The wildcard mask of the subnet mask.
+        /// </summary>
         public IPv4WildcardMask WildcardMask
         {
             get => wildcardMask;
         }
 
+        /// <summary>
+        /// The CIDR notation of the subnet mask.
+        /// </summary>
         public double CidrNotation
         {
             get => cidrNotation;
         }
 
+        /// <summary>
+        /// The total amount of addresses available from the subnet mask.
+        /// </summary>
         public int TotalAddresses
         {
             get => totalAddresses;
@@ -47,6 +70,10 @@ namespace SmallsOnline.Subnetting.Lib.Models
         private readonly double cidrNotation;
         private readonly int totalAddresses;
 
+        /// <summary>
+        /// Gets the last octet that was borrowed from.
+        /// </summary>
+        /// <returns>The last octet borrowed from.</returns>
         public Octet GetLastUsedOctet()
         {
             List<Octet> octetsList = new(octets);
@@ -56,6 +83,10 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return lastUsedOctet;
         }
 
+        /// <summary>
+        /// Returns the subnet mask as a byte array.
+        /// </summary>
+        /// <returns>A byte array of the subnet mask.</returns>
         public byte[] ToBytes()
         {
             byte[] byteArray = new byte[4];
@@ -67,16 +98,29 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return byteArray;
         }
 
+        /// <summary>
+        /// Returns the subnet mask as an IPAddress.
+        /// </summary>
+        /// <returns>An IPAddress type.</returns>
         public IPAddress ToIPAddress()
         {
             return new(ToBytes());
         }
 
+        /// <summary>
+        /// Displays the subnet mask as a string.
+        /// </summary>
+        /// <returns>A string representation of the subnet mask.</returns>
         public override string ToString()
         {
             return string.Join(".", ToBytes());
         }
 
+        /// <summary>
+        /// Gets the value of the octets for the subnet mask from a byte array.
+        /// </summary>
+        /// <param name="bytes">A byte array of the subnet mask.</param>
+        /// <returns>An array of the octets.</returns>
         private static Octet[] GetOctets_FromBytes(byte[] bytes)
         {
             Octet[] _octets = new Octet[4];
@@ -88,6 +132,11 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return _octets;
         }
 
+        /// <summary>
+        /// Calculate the total amount of addresses available from a CIDR notation.
+        /// </summary>
+        /// <param name="cidr">The CIDR notation of the subnet mask.</param>
+        /// <returns>The total amount of addresses.</returns>
         private static double GetMaxAddresses_FromCidr(double cidr)
         {
             // Get the maximum amount of addresses that can be used.
@@ -100,6 +149,11 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return 32 - cidr;
         }
 
+        /// <summary>
+        /// Get the wildcard mask of the subnet mask from a CIDR notation.
+        /// </summary>
+        /// <param name="cidr">The CIDR notation of the subnet mask.</param>
+        /// <returns>The wildcard mask of the subnet mask.</returns>
         private static IPv4WildcardMask GetWildcardMask_FromCidr(double cidr)
         {
             byte[] wildcardByteArray = new byte[4];
@@ -137,6 +191,11 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return new(wildcardByteArray, true);
         }
 
+        /// <summary>
+        /// Get the octets of a subnet mask from the wildcard mask.
+        /// </summary>
+        /// <param name="_wildcardMask">The wildcard mask of a subnet mask.</param>
+        /// <returns>An array of octets of the subnet mask.</returns>
         private static Octet[] GetSubnetMaskOctets_FromWildcardMask(IPv4WildcardMask _wildcardMask)
         {
             Octet[] _octets = new Octet[4];
@@ -148,6 +207,11 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return _octets;
         }
 
+        /// <summary>
+        /// Get the CIDR notation from the subnet mask's octets.
+        /// </summary>
+        /// <param name="_octets">The octets of the subnet mask.</param>
+        /// <returns>The CIDR notation of the subnet mask.</returns>
         private static double GetCidrMask_FromSubnetMask(Octet[] _octets)
         {
             List<BitRepresentation> bitList = new();
@@ -160,6 +224,11 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return 32 - countOfUsedBits;
         }
 
+        /// <summary>
+        /// Calculate the total amount of addresses from the octets of a subnet mask.
+        /// </summary>
+        /// <param name="_octet">The octets of the subnet mask.</param>
+        /// <returns>The total amount of addresses.</returns>
         private static int GetTotalAddresses_FromSubnetMask(Octet _octet)
         {
             return (int)(Math.Pow(256, _octet.OctetPosition - 1) * _octet.BinaryValue.GetUnusedBits());

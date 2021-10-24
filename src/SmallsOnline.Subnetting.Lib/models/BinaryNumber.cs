@@ -4,8 +4,15 @@ using System.Collections.Generic;
 
 namespace SmallsOnline.Subnetting.Lib.Models
 {
+    /// <summary>
+    /// A representation of a binary number.
+    /// </summary>
     public class BinaryNumber
     {
+        /// <summary>
+        /// Create from a byte.
+        /// </summary>
+        /// <param name="byteItem">A byte value.</param>
         public BinaryNumber(byte byteItem)
         {
             List<BitRepresentation> bitValuesList = new();
@@ -19,6 +26,9 @@ namespace SmallsOnline.Subnetting.Lib.Models
             bitValues = bitValuesList.ToArray();
         }
 
+        /// <summary>
+        /// An array of the bits used for the binary number.
+        /// </summary>
         public BitRepresentation[] BitValues
         {
             get => bitValues;
@@ -26,6 +36,10 @@ namespace SmallsOnline.Subnetting.Lib.Models
 
         private readonly BitRepresentation[] bitValues;
 
+        /// <summary>
+        /// Get the amount of unused bits.
+        /// </summary>
+        /// <returns>The amount of unused bits.</returns>
         public int GetUnusedBits()
         {
             int bitsUnused = 0;
@@ -38,6 +52,10 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return bitsUnused;
         }
 
+        /// <summary>
+        /// Get the amount of used bits.
+        /// </summary>
+        /// <returns>The amount of used bits.</returns>
         public int GetUsedBits()
         {
             int bitsUsed = 255;
@@ -50,6 +68,10 @@ namespace SmallsOnline.Subnetting.Lib.Models
             return bitsUsed;
         }
 
+        /// <summary>
+        /// Return the amount of unused bits as a string.
+        /// </summary>
+        /// <returns>The amount of unused bits.</returns>
         public override string ToString()
         {
             return $"{GetUnusedBits()}";
