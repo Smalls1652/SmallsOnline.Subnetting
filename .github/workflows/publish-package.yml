@@ -1,0 +1,30 @@
+name: Publish Nuget Package
+on:
+  release:
+    types: [ published ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Configure GitHub package registry source
+        run: dotnet nuget add source --username Smalls1652 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Smalls1652/index.json"
+
+      - name: Run dotnet restore
+        run: dotnet restore SmallsOnline.Subnetting.Lib.sln
+
+      - name: Create package
+        run: dotnet pack SmallsOnline.Subnetting.Lib.sln --configuration Release --no-restore --output .
+
+      - name: Publish package
+        run: dotnet nuget push "*.nupkg" --source github --api-key ${{ secrets.GITHUB_TOKEN }}

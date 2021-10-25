@@ -44,7 +44,7 @@ namespace SmallsOnline.Subnetting.Pwsh.Cmdlets
 
         protected override void ProcessRecord()
         {
-            Subnet subnetItem = ParameterSetName switch
+            IPv4Subnet subnetItem = ParameterSetName switch
             {
                 "SubnetString" => new(networkString),
                 _ => new(ipAddress, cidrNotation)
