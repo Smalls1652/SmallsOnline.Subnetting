@@ -1,5 +1,8 @@
-on: [push, pull_request]
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
 name: Build
+on:
+  - push
+  - pull_request
 jobs:
   build-classlib:
     name: Build class library
