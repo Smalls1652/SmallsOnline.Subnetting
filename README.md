@@ -18,7 +18,6 @@ This is the current status of the builds for the two core branches when new comm
 | Branch | Status |
 | ------ | ------ |
 | **main** | [![Build](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml) |
-| **dev** | [![Build](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml/badge.svg?branch=dev&event=push)](https://github.com/Smalls1652/SmallsOnline.Subnetting/actions/workflows/build.yml) |
 
 ## 🏗️ Building the library
 
