@@ -9,6 +9,7 @@ This repository is for a C# class library to perform subnetting of IPv4 address 
 | Name | Link |
 | ---- | ---- |
 | **Blazor Web App** | [@Smalls1652/SmallsOnline.Subnetting.BlazorWasm](https://github.com/Smalls1652/SmallsOnline.Subnetting.BlazorWasm) |
+| **PowerShell Module** | [@Smalls1652/SmallsOnline.Subnetting.Pwsh](https://github.com/Smalls1652/SmallsOnline.Subnetting.Pwsh) |
 
 ## 🧱 Build Status
 

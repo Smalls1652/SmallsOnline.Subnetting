@@ -23,22 +23,3 @@ jobs:
         run: dotnet restore "SmallsOnline.Subnetting.Lib.sln"
       - name: Run 'dotnet publish'
         run: dotnet publish "SmallsOnline.Subnetting.Lib.sln" --framework ${{ matrix.framework }}
-  build-pwsh-module:
-    name: Build PowerShell module
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        configuration: [ 'Release' ]
-    env:
-      DOTNET_NOLOGO: true
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup dotnet SDK
-        uses: actions/setup-dotnet@v1
-        with:
-         dotnet-version: '5.0.x'
-      - name: Run 'dotnet restore'
-        run: dotnet restore "SmallsOnline.Subnetting.Pwsh.sln"
-      - name: Run MSBuild
-        run: dotnet msbuild "SmallsOnline.Subnetting.Pwsh.sln" -target:"Restore;Clean;Build;Publish;BuildModuleDir" -property:"Configuration=${{ matrix.configuration }};DebugType=none;DebugSymbols=false"
