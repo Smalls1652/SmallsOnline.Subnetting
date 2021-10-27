@@ -19,65 +19,6 @@
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "build: SmallsOnline.Subnetting.Pwsh",
-            "detail": "Build the SmallsOnline.Subnetting.Pwsh binary module.",
-            "group": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "msbuild",
-                "SmallsOnline.Subnetting.Pwsh.sln",
-                "-target:Restore;Clean;Build;Publish;BuildModuleDir",
-                "-property:Configuration=${input:projectConfigType};DebugType=${input:buildDebugType};DebugSymbols=${input:buildDebugSymbols}",
-                "-noLogo",
-                "/property:GenerateFullPaths=true"
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": true
-            },
-            "problemMatcher": "$msCompile"
-        }
-    ],
-    "inputs": [
-        {
-            "type": "pickString",
-            "id": "projectConfigType",
-            "description": "What build config do you want to use?",
-            "options": [
-                "Debug",
-                "Release"
-            ],
-            "default": "Debug"
-        },
-        {
-            "type": "pickString",
-            "id": "buildDebugType",
-            "description": "What level of debug info do you want generated?",
-            "options": [
-                "full",
-                "pdbonly",
-                "portable",
-                "embedded",
-                "none"
-            ],
-            "default": "full"
-        },
-        {
-            "type": "pickString",
-            "id": "buildDebugSymbols",
-            "description": "Do you want to generate debug symbols?",
-            "options": [
-                "true",
-                "false"
-            ],
-            "default": "true"
         }
     ]
 }
