@@ -1,9 +1,9 @@
 using System;
 using System.Net;
 
-
 namespace SmallsOnline.Subnetting.Lib.Models
 {
+    using SmallsOnline.Subnetting.Lib.Enums;
     /// <summary>
     /// A representation of an IPv4 subnet.
     /// </summary>
@@ -44,7 +44,13 @@ namespace SmallsOnline.Subnetting.Lib.Models
         public IPv4Subnet(string networkString)
         {
             ParsedNetAddressString parsedNetAddress = new(networkString);
-            _subnetMask = new(parsedNetAddress.CidrNotation);
+
+            _subnetMask = parsedNetAddress.ParsedType switch
+            {
+                ParsedNetAddressStringType.SubnetMask => new(parsedNetAddress.SubnetMask.GetAddressBytes()),
+                _ => new(parsedNetAddress.CidrNotation)
+            };
+
             _networkAddress = GetSubnetBoundary(parsedNetAddress.IPAddress, _subnetMask);
             _broadcastAddress = GetBroadcastAddress(_networkAddress, _subnetMask);
             _usableHostRange = new(_networkAddress, _broadcastAddress);

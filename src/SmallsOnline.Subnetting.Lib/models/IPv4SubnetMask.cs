@@ -30,7 +30,7 @@ namespace SmallsOnline.Subnetting.Lib.Models
             octets = GetOctets_FromBytes(bytes);
             wildcardMask = new(bytes);
             cidrNotation = GetCidrMask_FromSubnetMask(octets);
-            totalAddresses = GetTotalAddresses_FromSubnetMask(GetLastUsedOctet());
+            totalAddresses = (int)GetMaxAddresses_FromCidr(cidrNotation);
         }
 
         /// <summary>
@@ -231,6 +231,14 @@ namespace SmallsOnline.Subnetting.Lib.Models
         /// <returns>The total amount of addresses.</returns>
         private static int GetTotalAddresses_FromSubnetMask(Octet _octet)
         {
+            // Note:
+            // ------
+            // This is still bugging out.
+            // 255.255.255.0 (/24), 255.255.0 (/16), and 255.0.0.0 (/8) are still returning 0.
+            // Since I've gotten the CIDR notation being calculated already, I've switched to using
+            // the GetMaxAddresses_FromCidr() method instead. Will keep looking into fixing this.
+            // ------
+
             return (int)(Math.Pow(256, _octet.OctetPosition - 1) * _octet.BinaryValue.GetUnusedBits());
         }
     }
