@@ -29,7 +29,7 @@ switch ($PSCmdlet.ParameterSetName) {
 Write-Verbose "The following frameworks will be targetted for building: $($frameworkVersions -join ', ')"
 
 $scriptRoot = $PSScriptRoot
-$libSlnPath = Join-Path -Path $scriptRoot -ChildPath "SmallsOnline.Subnetting.sln"
+$libSlnPath = Join-Path -Path $scriptRoot -ChildPath "SmallsOnline.Subnetting.Lib.sln"
 
 Push-Location -Path $scriptRoot
 
