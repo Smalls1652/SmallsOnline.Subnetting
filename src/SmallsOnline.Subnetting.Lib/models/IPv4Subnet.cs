@@ -35,6 +35,19 @@ namespace SmallsOnline.Subnetting.Lib.Models
             _usableHostRange = new(_networkAddress, _broadcastAddress);
         }
 
+         /// <summary>
+        /// Create from an IP address and CIDR mask.
+        /// </summary>
+        /// <param name="ipAddress">An IP address in a subnet.</param>
+        /// <param name="subnetMask">The subnet mask.</param>
+        public IPv4Subnet(IPAddress ipAddress, IPAddress subnetMask)
+        {
+            _subnetMask = new(subnetMask.GetAddressBytes());
+            _networkAddress = GetSubnetBoundary(ipAddress, _subnetMask);
+            _broadcastAddress = GetBroadcastAddress(_networkAddress, _subnetMask);
+            _usableHostRange = new(_networkAddress, _broadcastAddress);
+        }
+
         /// <summary>
         /// Create from a string of a network.
         /// For example:
