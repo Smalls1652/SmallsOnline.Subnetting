@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
     <PackageId>SmallsOnline.Subnetting.Lib</PackageId>
     <Authors>Timothy Small</Authors>
     <Company>Smalls.Online</Company>
@@ -13,15 +12,6 @@
       A class library for running network subnet calculations.
     </Description>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin/Debug/</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin/Release/</OutputPath>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>None</DebugType>
   </PropertyGroup>
 
 </Project>
