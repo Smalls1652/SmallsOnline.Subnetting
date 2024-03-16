@@ -1,6 +1,11 @@
 name: Publish Nuget Package
 
 on:
+  workflow_dispatch:
+  push:
+    tags: 
+      - 'v*.*.*'
+      - 'v*.*.*-*'
   release:
     types: [ published ]
 
