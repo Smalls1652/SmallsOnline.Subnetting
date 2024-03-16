@@ -20,6 +20,8 @@ jobs:
         project: [
           ".src/Lib"
         ]
+    env:
+      DOTNET_NOLOGO: true
 
     steps:
       - name: Checkout repo
