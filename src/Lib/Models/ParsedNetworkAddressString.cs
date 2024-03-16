@@ -118,8 +118,12 @@ public partial class ParsedNetworkAddressString
         return Convert.ToDouble(networkAddressMatch.Groups["cidrNotation"].Value);
     }
 
+#if NET8_0_OR_GREATER
     [GeneratedRegex(
         pattern: @"^(?'netAddress'(?:\d{1,3}(?:\.|)){4})(?:(?:\/)(?'cidrNotation'\d{1,2})|(?:\/|\s)(?'subnetMask'(?:\d{1,3}(?:\.|)){4}))$"
     )]
-    internal static partial Regex NetAddressRegex();
+    private static partial Regex NetAddressRegex();
+#else
+    private static Regex NetAddressRegex() => new(@"^(?'netAddress'(?:\d{1,3}(?:\.|)){4})(?:(?:\/)(?'cidrNotation'\d{1,2})|(?:\/|\s)(?'subnetMask'(?:\d{1,3}(?:\.|)){4}))$");
+#endif
 }
