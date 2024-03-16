@@ -10,43 +10,64 @@ public class UsableHostRange
     /// <summary>
     /// Create from the network and broadcast address.
     /// </summary>
-    /// <param name="netAddress">The network address of the subnet.</param>
+    /// <param name="networkAddress">The network address of the subnet.</param>
     /// <param name="broadcastAddress">The broadcast address of the subnet.</param>
-    public UsableHostRange(IPAddress netAddress, IPAddress broadcastAddress)
+    public UsableHostRange(IPAddress networkAddress, IPAddress broadcastAddress)
     {
-        Initialize(netAddress, broadcastAddress);
+        FirstUsableHostAddress = GetFirstUsableHostAddress(networkAddress);
+        LastUsableHostAddress = GetLastUsableHostAddress(broadcastAddress);
     }
 
     /// <summary>
     /// The first usable host address in the subnet.
     /// </summary>
-    public IPAddress FirstUsableHostAddress
-    {
-        get => _firstUsableHostAddress;
-    }
+    public IPAddress FirstUsableHostAddress { get; }
 
     /// <summary>
     /// The last usable host address in the subnet.
     /// </summary>
-    public IPAddress LastUsableHostAddress
+    public IPAddress LastUsableHostAddress { get; }
+
+    /// <summary>
+    /// Get the first usable host address in the subnet.
+    /// </summary>
+    /// <param name="networkAddress">The network address of the subnet.</param>
+    /// <returns>The first usable host address in the subnet.</returns>
+    private static IPAddress GetFirstUsableHostAddress(IPAddress networkAddress)
     {
-        get => _lastUsableHostAddress;
+        byte[] networkAddressBytes = networkAddress.GetAddressBytes();
+
+        return new(
+            address: [
+                networkAddressBytes[0],
+                networkAddressBytes[1],
+                networkAddressBytes[2],
+                (byte)(networkAddressBytes[3] + 1)
+            ]
+        );
     }
 
-    private IPAddress _firstUsableHostAddress;
-    private IPAddress _lastUsableHostAddress;
-
-    private void Initialize(IPAddress netAddress, IPAddress broadcastAddress)
+    /// <summary>
+    /// Get the last usable host address in the subnet.
+    /// </summary>
+    /// <param name="broadcastAddress">The broadcast address of the subnet.</param>
+    /// <returns>The last usable host address in the subnet.</returns>
+    private static IPAddress GetLastUsableHostAddress(IPAddress broadcastAddress)
     {
-        byte[] netAddressBytes = netAddress.GetAddressBytes();
         byte[] broadcastAddressBytes = broadcastAddress.GetAddressBytes();
 
-        _firstUsableHostAddress = new(new byte[] { netAddressBytes[0], netAddressBytes[1], netAddressBytes[2], (byte)(netAddressBytes[3] + 1) });
-        _lastUsableHostAddress = new(new byte[] { broadcastAddressBytes[0], broadcastAddressBytes[1], broadcastAddressBytes[2], (byte)(broadcastAddressBytes[3] - 1) });
+        return new(
+            address: [
+                broadcastAddressBytes[0],
+                broadcastAddressBytes[1],
+                broadcastAddressBytes[2],
+                (byte)(broadcastAddressBytes[3] - 1)
+            ]
+        );
     }
 
     public override string ToString()
     {
-        return $"{_firstUsableHostAddress} - {_lastUsableHostAddress}";
+        return $"{FirstUsableHostAddress} - {LastUsableHostAddress}";
     }
 }

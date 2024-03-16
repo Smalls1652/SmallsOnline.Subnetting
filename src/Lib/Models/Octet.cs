@@ -12,36 +12,27 @@ public class Octet
     /// <param name="byteItem">The byte value of the octet.</param>
     public Octet(int position, byte byteItem)
     {
-        octetPosition = position;
-        binaryValue = new(byteItem);
+        OctetPosition = position;
+        BinaryValue = new(byteItem);
     }
 
     /// <summary>
     /// The position of the octet.
     /// </summary>
-    public int OctetPosition
-    {
-        get => octetPosition;
-    }
+    public int OctetPosition { get; }
 
     /// <summary>
     /// The binary value of the octet.
     /// </summary>
-    public BinaryNumber BinaryValue
-    {
-        get => binaryValue;
-    }
+    public BinaryNumber BinaryValue { get; }
 
     /// <summary>
     /// If bits have been used.
     /// </summary>
     public bool BitsUsed
     {
-        get => binaryValue.GetUsedBits() > 0;
+        get => BinaryValue.GetUsedBits() > 0;
     }
-
-    private readonly int octetPosition;
-    private readonly BinaryNumber binaryValue;
 
     /// <summary>
     /// Return the byte value of the octet.
@@ -49,7 +40,7 @@ public class Octet
     /// <returns>The byte value of the octet.</returns>
     public byte ToByte()
     {
-        return Convert.ToByte(binaryValue.GetUnusedBits());
+        return Convert.ToByte(BinaryValue.GetUnusedBits());
     }
 
     /// <summary>
@@ -58,6 +49,6 @@ public class Octet
     /// <returns>The value of the octet as a string.</returns>
     public override string ToString()
     {
-        return $"{binaryValue.GetUnusedBits()}";
+        return $"{BinaryValue.GetUnusedBits()}";
     }
 }

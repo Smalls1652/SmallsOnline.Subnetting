@@ -12,17 +12,14 @@ public class BitRepresentation
     /// <param name="isOn">The bit is on and used.</param>
     public BitRepresentation(int position, bool isOn)
     {
-        bitPosition = position;
-        bitIsOn = isOn;
+        BitPosition = position;
+        BitIsOn = isOn;
     }
 
     /// <summary>
     /// The position of the bit.
     /// </summary>
-    public int BitPosition
-    {
-        get => bitPosition;
-    }
+    public int BitPosition { get; }
 
     /// <summary>
     /// The value of the bit.
@@ -30,27 +27,21 @@ public class BitRepresentation
     /// </summary>
     public int BitValue
     {
-        get => (int)Math.Pow(2, bitPosition);
+        get => (int)Math.Pow(2, BitPosition);
     }
 
     /// <summary>
     /// If the bit is on or not.
     /// </summary>
-    public bool BitIsOn
-    {
-        get => bitIsOn;
-    }
+    public bool BitIsOn { get; }
 
     /// <summary>
     /// The actual value of the bit if it's on or not.
     /// </summary>
     public int BitActualValue
     {
-        get => bitIsOn ? BitValue : 0;
+        get => BitIsOn ? BitValue : 0;
     }
-
-    private readonly int bitPosition;
-    private readonly bool bitIsOn;
 
     public override string ToString()
     {
