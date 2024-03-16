@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Core properties -->
+  <PropertyGroup>
+    <RootNamespace>SmallsOnline.Subnetting.Lib</RootNamespace>
+		<AssemblyName>SmallsOnline.Subnetting.Lib</AssemblyName>
+    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+  <!-- Package info -->
+	<PropertyGroup>
+		<PackageId>SmallsOnline.Subnetting.Lib</PackageId>
+		<Description>
+      A class library for running network subnet calculations.
+    </Description>
+		<Authors>Tim Small</Authors>
+		<Company>Smalls.Online</Company>
+		<Copyright>© 2024 Smalls.Online</Copyright>
+		<PackageProjectUrl>https://github.com/Smalls1652/SmallsOnline.Subnetting</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+</Project>
