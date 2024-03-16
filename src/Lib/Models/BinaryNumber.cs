@@ -13,26 +13,23 @@ public class BinaryNumber
     /// <param name="byteItem">A byte value.</param>
     public BinaryNumber(byte byteItem)
     {
-        List<BitRepresentation> bitValuesList = new();
-
         BitArray bitArray = new(new byte[] { byteItem });
+
+        BitValues = new BitRepresentation[bitArray.Length];
+
         for (int i = bitArray.Length - 1; i >= 0; i--)
         {
-            bitValuesList.Add(new(i, bitArray[i]));
+            BitValues[i] = new BitRepresentation(
+                position: i,
+                isOn: bitArray[i]
+            );
         }
-
-        bitValues = bitValuesList.ToArray();
     }
 
     /// <summary>
     /// An array of the bits used for the binary number.
     /// </summary>
-    public BitRepresentation[] BitValues
-    {
-        get => bitValues;
-    }
-
-    private readonly BitRepresentation[] bitValues;
+    public BitRepresentation[] BitValues { get; }
 
     /// <summary>
     /// Get the amount of unused bits.
@@ -42,7 +39,7 @@ public class BinaryNumber
     {
         int bitsUnused = 0;
 
-        foreach (BitRepresentation bitItem in bitValues)
+        foreach (BitRepresentation bitItem in BitValues)
         {
             bitsUnused += bitItem.BitActualValue;
         }
@@ -58,7 +55,7 @@ public class BinaryNumber
     {
         int bitsUsed = 255;
 
-        foreach (BitRepresentation bitItem in bitValues)
+        foreach (BitRepresentation bitItem in BitValues)
         {
             bitsUsed -= bitItem.BitActualValue;
         }
