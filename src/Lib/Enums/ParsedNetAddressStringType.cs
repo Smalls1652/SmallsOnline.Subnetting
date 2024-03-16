@@ -1,8 +1,7 @@
-namespace SmallsOnline.Subnetting.Lib.Enums
+namespace SmallsOnline.Subnetting.Lib.Enums;
+
+public enum ParsedNetAddressStringType
 {
-    public enum ParsedNetAddressStringType
-    {
-        CidrNotation = 0,
-        SubnetMask = 1
-    }
+    CidrNotation = 0,
+    SubnetMask = 1
 }
