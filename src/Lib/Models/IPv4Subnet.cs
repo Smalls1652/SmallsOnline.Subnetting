@@ -14,10 +14,10 @@ public class IPv4Subnet
     /// <param name="cidr">The CIDR mask for the subnet.</param>
     public IPv4Subnet(IPAddress ipAddress, double cidr)
     {
-        _subnetMask = new(cidr);
-        _networkAddress = GetSubnetBoundary(ipAddress, _subnetMask);
-        _broadcastAddress = GetBroadcastAddress(_networkAddress, _subnetMask);
-        _usableHostRange = new(_networkAddress, _broadcastAddress);
+        SubnetMask = new(cidr);
+        NetworkAddress = GetSubnetBoundary(ipAddress, SubnetMask);
+        BroadcastAddress = GetBroadcastAddress(NetworkAddress, SubnetMask);
+        UsableHostRange = new(NetworkAddress, BroadcastAddress);
     }
 
     /// <summary>
@@ -27,10 +27,10 @@ public class IPv4Subnet
     /// <param name="subnetMask">The subnet mask.</param>
     public IPv4Subnet(IPAddress ipAddress, IPv4SubnetMask subnetMask)
     {
-        _subnetMask = subnetMask;
-        _networkAddress = GetSubnetBoundary(ipAddress, _subnetMask);
-        _broadcastAddress = GetBroadcastAddress(_networkAddress, _subnetMask);
-        _usableHostRange = new(_networkAddress, _broadcastAddress);
+        SubnetMask = subnetMask;
+        NetworkAddress = GetSubnetBoundary(ipAddress, SubnetMask);
+        BroadcastAddress = GetBroadcastAddress(NetworkAddress, SubnetMask);
+        UsableHostRange = new(NetworkAddress, BroadcastAddress);
     }
 
     /// <summary>
@@ -40,10 +40,10 @@ public class IPv4Subnet
     /// <param name="subnetMask">The subnet mask.</param>
     public IPv4Subnet(IPAddress ipAddress, IPAddress subnetMask)
     {
-        _subnetMask = new(subnetMask.GetAddressBytes());
-        _networkAddress = GetSubnetBoundary(ipAddress, _subnetMask);
-        _broadcastAddress = GetBroadcastAddress(_networkAddress, _subnetMask);
-        _usableHostRange = new(_networkAddress, _broadcastAddress);
+        SubnetMask = new(subnetMask.GetAddressBytes());
+        NetworkAddress = GetSubnetBoundary(ipAddress, SubnetMask);
+        BroadcastAddress = GetBroadcastAddress(NetworkAddress, SubnetMask);
+        UsableHostRange = new(NetworkAddress, BroadcastAddress);
     }
 
     /// <summary>
@@ -56,55 +56,46 @@ public class IPv4Subnet
     {
         ParsedNetAddressString parsedNetAddress = new(networkString);
 
-        _subnetMask = parsedNetAddress.ParsedType switch
+        SubnetMask = parsedNetAddress.ParsedType switch
         {
-            ParsedNetAddressStringType.SubnetMask => new(parsedNetAddress.SubnetMask.GetAddressBytes()),
+            ParsedNetAddressStringType.SubnetMask => new(parsedNetAddress.SubnetMask!.GetAddressBytes()),
             _ => new(parsedNetAddress.CidrNotation)
         };
 
-        _networkAddress = GetSubnetBoundary(parsedNetAddress.IPAddress, _subnetMask);
-        _broadcastAddress = GetBroadcastAddress(_networkAddress, _subnetMask);
-        _usableHostRange = new(_networkAddress, _broadcastAddress);
+        NetworkAddress = GetSubnetBoundary(parsedNetAddress.IPAddress, SubnetMask);
+        BroadcastAddress = GetBroadcastAddress(NetworkAddress, SubnetMask);
+        UsableHostRange = new(NetworkAddress, BroadcastAddress);
     }
 
     /// <summary>
     /// The network address of the subnet.
     /// </summary>
-    public IPAddress NetworkAddress
-    {
-        get => _networkAddress;
-    }
+    public IPAddress NetworkAddress { get; }
 
     /// <summary>
     /// The subnet mask of the subnet.
     /// </summary>
-    public IPv4SubnetMask SubnetMask
-    {
-        get => _subnetMask;
-    }
+    public IPv4SubnetMask SubnetMask { get; }
 
     /// <summary>
     /// The CIDR mask of the subnet.
     /// </summary>
     public double CidrMask
     {
-        get => _subnetMask.CidrNotation;
+        get => SubnetMask.CidrNotation;
     }
 
     /// <summary>
     /// The broadcast address of the subnet.
     /// </summary>
-    public IPAddress BroadcastAddress
-    {
-        get => _broadcastAddress;
-    }
+    public IPAddress BroadcastAddress { get; }
 
     /// <summary>
     /// The total amount of addresses in the subnet.
     /// </summary>
     public double TotalAddresses
     {
-        get => _subnetMask.TotalAddresses;
+        get => SubnetMask.TotalAddresses;
     }
 
     /// <summary>
@@ -112,21 +103,13 @@ public class IPv4Subnet
     /// </summary>
     public double UsableAddresses
     {
-        get => _subnetMask.TotalAddresses - 2;
+        get => SubnetMask.TotalAddresses - 2;
     }
 
     /// <summary>
     /// The range of hosts available for use in the subnet.
     /// </summary>
-    public UsableHostRange UsableHostRange
-    {
-        get => _usableHostRange;
-    }
-
-    private readonly IPAddress _networkAddress;
-    private readonly IPv4SubnetMask _subnetMask;
-    private readonly IPAddress _broadcastAddress;
-    private readonly UsableHostRange _usableHostRange;
+    public UsableHostRange UsableHostRange { get; }
 
     /// <summary>
     /// Display the subnet as a string.
@@ -134,7 +117,7 @@ public class IPv4Subnet
     /// <returns>A string representation of the subnet with the network address and CIDR mask.</returns>
     public override string ToString()
     {
-        return $"{_networkAddress}/{CidrMask}";
+        return $"{NetworkAddress}/{CidrMask}";
     }
 
     /// <summary>
