@@ -21,4 +21,8 @@
 		<PackageProjectUrl>https://github.com/Smalls1652/SmallsOnline.Subnetting</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
+	<!-- Packages -->
+	<ItemGroup>
+		<PackageReference Include="GitVersion.MsBuild" Version="5.12.0" PrivateAssets="all" Condition="'$(GITVERSION_LOCAL_BUILD)'=='true'" />
+	</ItemGroup>
 </Project>
