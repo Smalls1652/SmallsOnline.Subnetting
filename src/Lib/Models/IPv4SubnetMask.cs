@@ -13,10 +13,10 @@ public class IPv4SubnetMask
     /// <param name="cidr">The CIDR notation of the subnet mask.</param>
     public IPv4SubnetMask(double cidr)
     {
-        wildcardMask = GetWildcardMask_FromCidr(cidr);
-        octets = GetSubnetMaskOctets_FromWildcardMask(wildcardMask);
-        cidrNotation = cidr;
-        totalAddresses = (int)GetMaxAddresses_FromCidr(cidr);
+        WildcardMask = GetWildcardMaskFromCidr(cidr);
+        Octets = GetSubnetMaskOctetsFromWildcardMask(WildcardMask);
+        CidrNotation = cidr;
+        TotalAddresses = (int)GetMaxAddressesFromCidr(cidr);
     }
 
     /// <summary>
@@ -25,48 +25,31 @@ public class IPv4SubnetMask
     /// <param name="bytes">The byte array of the subnet mask.</param>
     public IPv4SubnetMask(byte[] bytes)
     {
-        octets = GetOctets_FromBytes(bytes);
-        wildcardMask = new(bytes);
-        cidrNotation = GetCidrMask_FromSubnetMask(octets);
-        totalAddresses = (int)GetMaxAddresses_FromCidr(cidrNotation);
+        Octets = GetOctetsFromBytes(bytes);
+        WildcardMask = new(bytes);
+        CidrNotation = GetCidrMaskFromSubnetMask(Octets);
+        TotalAddresses = (int)GetMaxAddressesFromCidr(CidrNotation);
     }
 
     /// <summary>
     /// The octets of the subnet mask.
     /// </summary>
-    public Octet[] Octets
-    {
-        get => octets;
-    }
+    public Octet[] Octets { get; }
 
     /// <summary>
     /// The wildcard mask of the subnet mask.
     /// </summary>
-    public IPv4WildcardMask WildcardMask
-    {
-        get => wildcardMask;
-    }
+    public IPv4WildcardMask WildcardMask { get; }
 
     /// <summary>
     /// The CIDR notation of the subnet mask.
     /// </summary>
-    public double CidrNotation
-    {
-        get => cidrNotation;
-    }
+    public double CidrNotation { get; }
 
     /// <summary>
     /// The total amount of addresses available from the subnet mask.
     /// </summary>
-    public int TotalAddresses
-    {
-        get => totalAddresses;
-    }
-
-    private readonly Octet[] octets;
-    private readonly IPv4WildcardMask wildcardMask;
-    private readonly double cidrNotation;
-    private readonly int totalAddresses;
+    public int TotalAddresses { get; }
 
     /// <summary>
     /// Gets the last octet that was borrowed from.
@@ -74,7 +57,7 @@ public class IPv4SubnetMask
     /// <returns>The last octet borrowed from.</returns>
     public Octet GetLastUsedOctet()
     {
-        List<Octet> octetsList = new(octets);
+        List<Octet> octetsList = new(Octets);
 
         Octet lastUsedOctet = octetsList.FindAll((octetItem) => octetItem.BitsUsed == true)[0];
 
@@ -88,9 +71,9 @@ public class IPv4SubnetMask
     public byte[] ToBytes()
     {
         byte[] byteArray = new byte[4];
-        for (int i = 0; i < octets.Length; i++)
+        for (int i = 0; i < Octets.Length; i++)
         {
-            byteArray[i] = (byte)(byte.MinValue + octets[i].ToByte());
+            byteArray[i] = (byte)(byte.MinValue + Octets[i].ToByte());
         }
 
         return byteArray;
@@ -119,15 +102,15 @@ public class IPv4SubnetMask
     /// </summary>
     /// <param name="bytes">A byte array of the subnet mask.</param>
     /// <returns>An array of the octets.</returns>
-    private static Octet[] GetOctets_FromBytes(byte[] bytes)
+    private static Octet[] GetOctetsFromBytes(byte[] bytes)
     {
-        Octet[] _octets = new Octet[4];
-        for (int i = 0; i < _octets.Length; i++)
+        Octet[] octets = new Octet[4];
+        for (int i = 0; i < octets.Length; i++)
         {
-            _octets[i] = new(i + 1, bytes[i]);
+            octets[i] = new(i + 1, bytes[i]);
         }
 
-        return _octets;
+        return octets;
     }
 
     /// <summary>
@@ -135,14 +118,14 @@ public class IPv4SubnetMask
     /// </summary>
     /// <param name="cidr">The CIDR notation of the subnet mask.</param>
     /// <returns>The total amount of addresses.</returns>
-    private static double GetMaxAddresses_FromCidr(double cidr)
+    private static double GetMaxAddressesFromCidr(double cidr)
     {
         // Get the maximum amount of addresses that can be used.
         // Calculated by: 2^(32-cidrNotation)
-        return Math.Pow(2, GetBitBlock_FromCidr(cidr));
+        return Math.Pow(2, GetBitBlockFromCidr(cidr));
     }
 
-    private static double GetBitBlock_FromCidr(double cidr)
+    private static double GetBitBlockFromCidr(double cidr)
     {
         return 32 - cidr;
     }
@@ -152,11 +135,11 @@ public class IPv4SubnetMask
     /// </summary>
     /// <param name="cidr">The CIDR notation of the subnet mask.</param>
     /// <returns>The wildcard mask of the subnet mask.</returns>
-    private static IPv4WildcardMask GetWildcardMask_FromCidr(double cidr)
+    private static IPv4WildcardMask GetWildcardMaskFromCidr(double cidr)
     {
         byte[] wildcardByteArray = new byte[4];
 
-        double maxAddresses = GetMaxAddresses_FromCidr(cidr);
+        double maxAddresses = GetMaxAddressesFromCidr(cidr);
 
         // Get the amount of bytes filled.
         // This is calculated by getting the log of the max addresses from the base of 256 and rounding to the lowest number.
@@ -192,28 +175,28 @@ public class IPv4SubnetMask
     /// <summary>
     /// Get the octets of a subnet mask from the wildcard mask.
     /// </summary>
-    /// <param name="_wildcardMask">The wildcard mask of a subnet mask.</param>
+    /// <param name="wildcardMask">The wildcard mask of a subnet mask.</param>
     /// <returns>An array of octets of the subnet mask.</returns>
-    private static Octet[] GetSubnetMaskOctets_FromWildcardMask(IPv4WildcardMask _wildcardMask)
+    private static Octet[] GetSubnetMaskOctetsFromWildcardMask(IPv4WildcardMask wildcardMask)
     {
-        Octet[] _octets = new Octet[4];
-        for (int i = _wildcardMask.WildcardBytes.Length - 1; i >= 0; i--)
+        Octet[] octets = new Octet[4];
+        for (int i = wildcardMask.WildcardBytes.Length - 1; i >= 0; i--)
         {
-            _octets[i] = new(i + 1, (byte)(byte.MaxValue - _wildcardMask.WildcardBytes[i]));
+            octets[i] = new(i + 1, (byte)(byte.MaxValue - wildcardMask.WildcardBytes[i]));
         }
 
-        return _octets;
+        return octets;
     }
 
     /// <summary>
     /// Get the CIDR notation from the subnet mask's octets.
     /// </summary>
-    /// <param name="_octets">The octets of the subnet mask.</param>
+    /// <param name="octets">The octets of the subnet mask.</param>
     /// <returns>The CIDR notation of the subnet mask.</returns>
-    private static double GetCidrMask_FromSubnetMask(Octet[] _octets)
+    private static double GetCidrMaskFromSubnetMask(Octet[] octets)
     {
         List<BitRepresentation> bitList = new();
-        foreach (Octet octetItem in _octets)
+        foreach (Octet octetItem in octets)
         {
             bitList.AddRange(octetItem.BinaryValue.BitValues);
         }
@@ -225,9 +208,9 @@ public class IPv4SubnetMask
     /// <summary>
     /// Calculate the total amount of addresses from the octets of a subnet mask.
     /// </summary>
-    /// <param name="_octet">The octets of the subnet mask.</param>
+    /// <param name="octet">The octets of the subnet mask.</param>
     /// <returns>The total amount of addresses.</returns>
-    private static int GetTotalAddresses_FromSubnetMask(Octet _octet)
+    private static int GetTotalAddressesFromSubnetMask(Octet octet)
     {
         // Note:
         // ------
@@ -237,6 +220,6 @@ public class IPv4SubnetMask
         // the GetMaxAddresses_FromCidr() method instead. Will keep looking into fixing this.
         // ------
 
-        return (int)(Math.Pow(256, _octet.OctetPosition - 1) * _octet.BinaryValue.GetUnusedBits());
+        return (int)(Math.Pow(256, octet.OctetPosition - 1) * octet.BinaryValue.GetUnusedBits());
     }
 }
