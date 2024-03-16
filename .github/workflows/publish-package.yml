@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         project: [
-          ".src/Lib"
+          "./src/Lib"
         ]
     env:
       DOTNET_NOLOGO: true
