@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "2.0.0",
   "tasks": [
     {
@@ -12,6 +12,8 @@
       "command": "dotnet",
       "args": [
         "watch",
+        "--framework",
+        "${input:targetFramework}",
         "--",
         "run",
         "/consoleloggerparameters:NoSummary"
@@ -56,7 +58,9 @@
       "command": "dotnet",
       "args": [
         "run",
-        "/consoleloggerparameters:NoSummary"
+        "/consoleloggerparameters:NoSummary",
+        "--framework",
+        "${input:targetFramework}"
       ],
       "options": {
         "cwd": "${workspaceFolder}/${input:runProject}",
@@ -100,7 +104,9 @@
         "build",
         "${workspaceFolder}/${input:projectItem}",
         "--configuration",
-        "${input:dotnetConfiguration}"
+        "${input:dotnetConfiguration}",
+        "--framework",
+        "${input:targetFramework}"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -120,7 +126,9 @@
         "clean",
         "${workspaceFolder}/${input:projectItem}",
         "--configuration",
-        "${input:dotnetConfiguration}"
+        "${input:dotnetConfiguration}",
+        "--framework",
+        "${input:targetFramework}"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -248,6 +256,22 @@
         {
           "label": "Windows (x86)",
           "value": "win-x86"
+        }
+      ]
+    },
+    {
+      "id": "targetFramework",
+      "description": "Select a target framework for the build.",
+      "type": "pickString",
+      "default": "net8.0",
+      "options": [
+        {
+          "label": "net8.0",
+          "value": "net8.0"
+        },
+        {
+          "label": "netstandard2.0",
+          "value": "netstandard2.0"
         }
       ]
     },
