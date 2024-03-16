@@ -1,5 +1,4 @@
 using System.Net;
-using SmallsOnline.Subnetting.Lib.Enums;
 
 namespace SmallsOnline.Subnetting.Lib.Models;
 

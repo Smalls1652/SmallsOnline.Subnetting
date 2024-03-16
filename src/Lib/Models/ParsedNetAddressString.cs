@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.RegularExpressions;
-using SmallsOnline.Subnetting.Lib.Enums;
 
 namespace SmallsOnline.Subnetting.Lib.Models;
 
