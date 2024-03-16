@@ -6,13 +6,13 @@ namespace SmallsOnline.Subnetting.Lib.Models;
 /// <summary>
 /// A representation of a parsed network address.
 /// </summary>
-public partial class ParsedNetAddressString
+public partial class ParsedNetworkAddressString
 {
     /// <summary>
     /// Create from a network string.
     /// </summary>
     /// <param name="networkAddressString">The string of the network.</param>
-    public ParsedNetAddressString(string networkAddressString)
+    public ParsedNetworkAddressString(string networkAddressString)
     {
         Match networkAddressMatch = ParseNetworkAddressString(networkAddressString);
 

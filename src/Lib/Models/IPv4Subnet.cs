@@ -54,11 +54,11 @@ public class IPv4Subnet
     /// <param name="networkString">A network written in a string format.</param>
     public IPv4Subnet(string networkString)
     {
-        ParsedNetAddressString parsedNetAddress = new(networkString);
+        ParsedNetworkAddressString parsedNetAddress = new(networkString);
 
         SubnetMask = parsedNetAddress.ParsedType switch
         {
-            ParsedNetAddressStringType.SubnetMask => new(parsedNetAddress.SubnetMask!.GetAddressBytes()),
+            ParsedNetworkAddressStringType.SubnetMask => new(parsedNetAddress.SubnetMask!.GetAddressBytes()),
             _ => new(parsedNetAddress.CidrNotation)
         };
 
