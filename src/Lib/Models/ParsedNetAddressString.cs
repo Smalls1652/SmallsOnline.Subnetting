@@ -6,71 +6,120 @@ namespace SmallsOnline.Subnetting.Lib.Models;
 /// <summary>
 /// A representation of a parsed network address.
 /// </summary>
-public class ParsedNetAddressString
+public partial class ParsedNetAddressString
 {
     /// <summary>
     /// Create from a network string.
     /// </summary>
-    /// <param name="netAddressString">The string of the network.</param>
-    public ParsedNetAddressString(string netAddressString)
+    /// <param name="networkAddressString">The string of the network.</param>
+    public ParsedNetAddressString(string networkAddressString)
     {
-        Initialize(netAddressString);
+        Match networkAddressMatch = ParseNetworkAddressString(networkAddressString);
+
+        IPAddress = GetIPAddressFromMatch(networkAddressMatch);
+        ParsedType = GetParsedTypeFromMatch(networkAddressMatch);
+
+        if (ParsedType == ParsedNetworkAddressStringType.CidrNotation)
+        {
+            CidrNotation = GetCidrNotationFromMatch(networkAddressMatch);
+        }
+        else
+        {
+            SubnetMask = GetSubnetMaskFromMatch(networkAddressMatch);
+        }
     }
 
     /// <summary>
     /// The parsed IP address.
     /// </summary>
-    public IPAddress IPAddress
-    {
-        get => _ipAddress;
-    }
+    public IPAddress IPAddress { get; }
 
     /// <summary>
     /// The parsed CIDR notation.
     /// </summary>
-    public double CidrNotation
-    {
-        get => _cidrNotation;
-    }
+    public double CidrNotation { get; }
 
     /// <summary>
     /// The parsed subnet mask.
     /// </summary>
-    public IPAddress SubnetMask
-    {
-        get => _subnetMask;
-    }
-
-    public ParsedNetAddressStringType ParsedType
-    {
-        get => _parsedType;
-    }
-
-    private IPAddress _ipAddress;
-    private double _cidrNotation;
-    private IPAddress _subnetMask;
-    private ParsedNetAddressStringType _parsedType;
+    public IPAddress? SubnetMask { get; }
 
     /// <summary>
-    /// Parses the string and sets the properties for the IP address and CIDR notation.
+    /// The parsed type of the network address string.
     /// </summary>
-    /// <param name="netAddressString">The string of the network.</param>
-    private void Initialize(string netAddressString)
+    public ParsedNetworkAddressStringType ParsedType { get; }
+
+    /// <summary>
+    /// Parse the network address string.
+    /// </summary>
+    /// <param name="networkAddressString">The network address string.</param>
+    /// <returns>A <see cref="Match"/> item of the network address string.</returns>
+    /// <exception cref="InvalidOperationException">The network address string is not valid.</exception>
+    private static Match ParseNetworkAddressString(string networkAddressString)
     {
-        Regex netAddressRegex = new(@"^(?'netAddress'(?:\d{1,3}(?:\.|)){4})(?:(?:\/)(?'cidrNotation'\d{1,2})|(?:\/|\s)(?'subnetMask'(?:\d{1,3}(?:\.|)){4}))$");
-        Match netAddressMatch = netAddressRegex.Match(netAddressString);
+        Match networkAddressMatch = NetAddressRegex().Match(networkAddressString);
 
-        _ipAddress = IPAddress.Parse(netAddressMatch.Groups["netAddress"].Value);
+        if (!networkAddressMatch.Success)
+        {
+            throw new InvalidOperationException("The network address string is not valid.");
+        }
 
-        if (netAddressMatch.Groups["cidrNotation"].Success)
-        {
-            _cidrNotation = Convert.ToDouble(netAddressMatch.Groups["cidrNotation"].Value);
-            _parsedType = ParsedNetAddressStringType.CidrNotation;
-        }
-        else if (netAddressMatch.Groups["subnetMask"].Success)
-        {
-            _subnetMask = IPAddress.Parse(netAddressMatch.Groups["subnetMask"].Value);
-            _parsedType = ParsedNetAddressStringType.SubnetMask;
-        }
+        return networkAddressMatch;
     }
+
+    /// <summary>
+    /// Get the IP address from the match.
+    /// </summary>
+    /// <param name="networkAddressMatch">The match of the network address string.</param>
+    /// <returns>The IP address from the match.</returns>
+    private static IPAddress GetIPAddressFromMatch(Match networkAddressMatch)
+    {
+        return IPAddress.Parse(networkAddressMatch.Groups["netAddress"].Value);
+    }
+
+    /// <summary>
+    /// Get the parsed type from the match.
+    /// </summary>
+    /// <param name="networkAddressMatch">The match of the network address string.</param>
+    /// <returns>The parsed type from the match.</returns>
+    /// <exception cref="InvalidOperationException">Could not determine the type of the network address string.</exception>
+    private static ParsedNetworkAddressStringType GetParsedTypeFromMatch(Match networkAddressMatch)
+    {
+        if (networkAddressMatch.Groups["cidrNotation"].Success)
+        {
+            return ParsedNetworkAddressStringType.CidrNotation;
+        }
+        
+        if (networkAddressMatch.Groups["subnetMask"].Success)
+        {
+            return ParsedNetworkAddressStringType.SubnetMask;
+        }
+
+        throw new InvalidOperationException("Could not determine the type of the network address string.");
+    }
+
+    /// <summary>
+    /// Get the subnet mask from the match.
+    /// </summary>
+    /// <param name="networkAddressMatch">The match of the network address string.</param>
+    /// <returns>The subnet mask from the match.</returns>
+    private static IPAddress GetSubnetMaskFromMatch(Match networkAddressMatch)
+    {
+        return IPAddress.Parse(networkAddressMatch.Groups["subnetMask"].Value);
+    }
+
+    /// <summary>
+    /// Get the CIDR notation from the match.
+    /// </summary>
+    /// <param name="networkAddressMatch">The match of the network address string.</param>
+    /// <returns>The CIDR notation from the match.</returns>
+    private static double GetCidrNotationFromMatch(Match networkAddressMatch)
+    {
+        return Convert.ToDouble(networkAddressMatch.Groups["cidrNotation"].Value);
+    }
+
+    [GeneratedRegex(
+        pattern: @"^(?'netAddress'(?:\d{1,3}(?:\.|)){4})(?:(?:\/)(?'cidrNotation'\d{1,2})|(?:\/|\s)(?'subnetMask'(?:\d{1,3}(?:\.|)){4}))$"
+    )]
+    internal static partial Regex NetAddressRegex();
 }
