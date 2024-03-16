@@ -1,4 +1,4 @@
-namespace SmallsOnline.Subnetting.Lib.Enums;
+namespace SmallsOnline.Subnetting.Lib.Models;
 
 public enum ParsedNetAddressStringType
 {
