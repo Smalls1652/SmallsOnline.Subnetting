@@ -14,14 +14,14 @@ public class IPv4WildcardMask
     {
         if (isAlreadyCalculated)
         {
-            wildcardBytes = bytes;
+            WildcardBytes = bytes;
         }
         else
         {
-            wildcardBytes = new byte[4];
+            WildcardBytes = new byte[4];
             for (int i = 0; i < bytes.Length; i++)
             {
-                wildcardBytes[i] = (byte)(byte.MaxValue - bytes[i]);
+                WildcardBytes[i] = (byte)(byte.MaxValue - bytes[i]);
             }
         }
     }
@@ -29,12 +29,7 @@ public class IPv4WildcardMask
     /// <summary>
     /// The bytes of the wildcard mask.
     /// </summary>
-    public byte[] WildcardBytes
-    {
-        get => wildcardBytes;
-    }
-
-    private readonly byte[] wildcardBytes;
+    public byte[] WildcardBytes { get; }
 
     /// <summary>
     /// Displays the wildcard mask as a string.
@@ -42,6 +37,6 @@ public class IPv4WildcardMask
     /// <returns>A string representation of the wildcard mask.</returns>
     public override string ToString()
     {
-        return string.Join<byte>(".", wildcardBytes);
+        return string.Join(".", WildcardBytes);
     }
 }
