@@ -15,5 +15,8 @@ $manifest = $manifest.Replace("{{ VERSION }}", $Version)
 if ($null -ne $PrereleaseVersion -and [string]::IsNullOrEmpty($PrereleaseVersion) -eq $false) {
     $manifest = $manifest.Replace("{{ PRERELEASE_VERSION }}", $PrereleaseVersion)
 }
+else {
+    $manifest = $manifest.Replace("{{ PRERELEASE_VERSION }}", "")
+}
 
 $manifest | Set-Content -Path $outputManifestPath -Force
