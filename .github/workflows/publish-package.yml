@@ -3,9 +3,9 @@ name: Publish Nuget Package
 on:
   workflow_dispatch:
   push:
-    tags: 
-      - 'v*.*.*'
-      - 'v*.*.*-*'
+    tags:
+      - "v*.*.*"
+      - "v*.*.*-*"
 
 permissions:
   contents: read
@@ -17,9 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [
-          "./src/Lib"
-        ]
+        project: ["./src/Lib"]
     env:
       DOTNET_NOLOGO: true
 

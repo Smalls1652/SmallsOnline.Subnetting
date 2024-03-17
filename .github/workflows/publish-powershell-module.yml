@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+name: "Publish PowerShell module"
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+      - "v*.*.*-*"
+
+jobs:
+  publish:
+    name: "Publish"
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: "Setup dotnet SDK"
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: "Install .NET tools"
+        run: dotnet tool restore
+
+      - name: "Update project files with GitVersion"
+        run: dotnet tool run dotnet-gitversion /updateprojectfiles
+
+      - name: "Pwsh: Run 'dotnet build'"
+        run: |
+          dotnet publish ./src/Pwsh --configuration Release --framework netstandard2.0
+
+      - name: "Publish to PowerShell Gallery"
+        shell: pwsh
+        run: |
+          Publish-Module -Path "./artifacts/powershell/release/SmallsOnline.Subnetting.Pwsh/" -NuGetApiKey "${{ secrets.POWERSHELL_GALLERY_PUBLISH_KEY }}" -Repository "PSGallery" -Verbose

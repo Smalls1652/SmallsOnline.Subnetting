@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!-- Core properties -->
+	<PropertyGroup>
+		<RootNamespace>SmallsOnline.Subnetting.Pwsh</RootNamespace>
+		<AssemblyName>SmallsOnline.Subnetting.Pwsh</AssemblyName>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	</PropertyGroup>
+	<!-- Package info -->
+	<PropertyGroup>
+		<PackageId>SmallsOnline.Subnetting.Pwsh</PackageId>
+		<Description>
+			A PowerShell module for running network subnet calculations.
+		</Description>
+		<Authors>Tim Small</Authors>
+		<Company>Smalls.Online</Company>
+		<Copyright>© 2024 Smalls.Online</Copyright>
+		<PackageProjectUrl>https://github.com/Smalls1652/SmallsOnline.Subnetting</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+	<!-- Content -->
+	<ItemGroup>
+		<Content Include="SmallsOnline.Subnetting.Pwsh.psd1">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<None Include="Update-PwshModuleManifestVersion.ps1">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+	<!-- Packages -->
+	<ItemGroup>
+		<PackageReference Include="GitVersion.MsBuild" Version="5.12.0" PrivateAssets="all"
+			Condition="'$(GITVERSION_LOCAL_BUILD)'=='true'" />
+		<PackageReference Include="PowerShellStandard.Library" Version="5.1.1" PrivateAssets="all" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Lib\Lib.csproj" />
+	</ItemGroup>
+	<!-- Custom targets -->
+	<Target Name="CopyTemplateModuleManifest" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<TemplateModuleManifestPath>..\TemplateFiles\SmallsOnline.Subnetting.Pwsh.psd1</TemplateModuleManifestPath>
+		</PropertyGroup>
+		<Copy SourceFiles="$(TemplateModuleManifestPath)" DestinationFolder="$(MSBuildProjectDirectory)" />
+	</Target>
+	<Target Name="UpdateModuleManifest" BeforeTargets="Build">
+		<Exec Command="pwsh -NoProfile -File 'Update-PwshModuleManifestVersion.ps1' -Version '$(VersionPrefix)' -PrereleaseVersion '$(VersionSuffix)'" />
+	</Target>
+	<Target Name="CreatePowerShellModule" AfterTargets="Publish">
+		<PropertyGroup>
+			<PowerShellModuleOutDir>$(ArtifactsPath)\powershell\$(Configuration.ToLower())\$(AssemblyName)\</PowerShellModuleOutDir>
+			<CompiledOutPath>$(ArtifactsPath)\publish\$(MSBuildProjectName)\$(Configuration.ToLower())\</CompiledOutPath>
+			<Compiled_LibDll>$(CompiledOutPath)SmallsOnline.Subnetting.Lib.dll</Compiled_LibDll>
+			<Compiled_PwshDll>$(CompiledOutPath)SmallsOnline.Subnetting.Pwsh.dll</Compiled_PwshDll>
+			<Compiled_PwshPsd1>$(CompiledOutPath)SmallsOnline.Subnetting.Pwsh.psd1</Compiled_PwshPsd1>
+		</PropertyGroup>
+		<RemoveDir Directories="$(PowerShellModuleOutDir)" />
+		<MakeDir Directories="$(PowerShellModuleOutDir)" />
+		<Copy SourceFiles="$(Compiled_LibDll)" DestinationFolder="$(PowerShellModuleOutDir)" />
+		<Copy SourceFiles="$(Compiled_PwshDll)" DestinationFolder="$(PowerShellModuleOutDir)" />
+		<Copy SourceFiles="$(Compiled_PwshPsd1)" DestinationFolder="$(PowerShellModuleOutDir)" />
+	</Target>
+</Project>

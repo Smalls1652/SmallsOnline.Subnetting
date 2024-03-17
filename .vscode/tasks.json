@@ -136,8 +136,8 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Compile project (Native AOT)",
-      "detail": "Compile a project with Native AOT.",
+      "label": "Compile project",
+      "detail": "Compile a project.",
       "icon": {
         "id": "package",
         "color": "terminal.ansiRed"
@@ -146,14 +146,17 @@
       "command": "dotnet",
       "args": [
         "publish",
-        "${workspaceFolder}/${input:nativeAotCompileProject}",
+        "${workspaceFolder}/${input:publishableProject}",
         "--configuration",
         "Release",
-        "--runtime",
-        "${input:runtimeIdentifier}"
+        "--framework",
+        "${input:targetFramework}",
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GITVERSION_LOCAL_BUILD": "true"
+        }
       },
       "problemMatcher": "$msCompile",
       "presentation": {
@@ -214,6 +217,10 @@
         {
           "label": "Lib",
           "value": "src/Lib/"
+        },
+        {
+          "label": "Pwsh",
+          "value": "src/Pwsh"
         }
       ]
     },
@@ -272,6 +279,22 @@
         {
           "label": "netstandard2.0",
           "value": "netstandard2.0"
+        }
+      ]
+    },
+    {
+      "id": "publishableProject",
+      "description": "Select a project to publish.",
+      "type": "pickString",
+      "default": "src/Lib",
+      "options": [
+        {
+          "label": "Lib",
+          "value": "src/Lib"
+        },
+        {
+          "label": "Pwsh",
+          "value": "src/Pwsh"
         }
       ]
     },
