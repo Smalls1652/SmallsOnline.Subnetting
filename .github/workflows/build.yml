@@ -15,10 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [
-            "./src/Lib",
-            "./src/Pwsh"
-        ]
+        project: ["./src/Lib", "./src/Pwsh"]
     env:
       DOTNET_NOLOGO: true
     steps:
