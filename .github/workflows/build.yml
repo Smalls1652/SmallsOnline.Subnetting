@@ -16,11 +16,8 @@ jobs:
     strategy:
       matrix:
         project: [
-            "./src/Lib"
-        ]
-        target-framwork: [
-          "net8.0",
-          "netstandard2.0",
+            "./src/Lib",
+            "./src/Pwsh"
         ]
     env:
       DOTNET_NOLOGO: true
@@ -35,5 +32,13 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Run 'dotnet build'
-        run: dotnet build ${{ matrix.project }} --configuration Release --framework ${{ matrix.target-framwork }}
+      - name: "Lib: Run 'dotnet build'"
+        if: matrix.project == './src/Lib'
+        run: |
+          dotnet build ${{ matrix.project }} --configuration Release --framework net8.0;
+          dotnet build ${{ matrix.project }} --configuration Release --framework netstandard2.0
+
+      - name: "Pwsh: Run 'dotnet build'"
+        if: matrix.project == './src/Pwsh'
+        run: |
+          dotnet build ${{ matrix.project }} --configuration Release --framework netstandard2.0
