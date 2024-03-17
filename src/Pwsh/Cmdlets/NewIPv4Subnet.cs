@@ -7,7 +7,7 @@ namespace SmallsOnline.Subnetting.Pwsh.Cmdlets;
 /// <summary>
 /// Creates a new IPv4 subnet.
 /// </summary>
-[Cmdlet(VerbsCommon.New, "IPv4Subnet")]
+[Cmdlet(VerbsCommon.New, "IPv4Subnet", DefaultParameterSetName = "IPAddressAndCIDRNotation")]
 public class NewIPv4Subnet : PSCmdlet
 {
     /// <summary>
