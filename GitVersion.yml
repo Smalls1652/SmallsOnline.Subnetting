@@ -1,8 +1,13 @@
 assembly-versioning-scheme: MajorMinorPatchTag
 mode: ContinuousDeployment
-increment: Inherit
-continuous-delivery-fallback-tag: 'preview'
-branches: {}
+continuous-delivery-fallback-tag: preview
+branches:
+  main:
+    mode: ContinuousDeployment
+    tag: preview
+    is-release-branch: true
+    is-mainline: true
 ignore:
   sha: []
+increment: Inherit
 merge-message-formats: {}
