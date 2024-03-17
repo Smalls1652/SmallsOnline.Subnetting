@@ -1,4 +1,4 @@
-# `SmallsOnline.Subnetting`
+# SmallsOnline.Subnetting
 
 _**A C#-based subnet calculator**_
 
