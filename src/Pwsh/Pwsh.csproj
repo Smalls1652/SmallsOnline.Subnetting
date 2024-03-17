@@ -49,7 +49,7 @@
 		<Copy SourceFiles="$(TemplateModuleManifestPath)" DestinationFolder="$(MSBuildProjectDirectory)" />
 	</Target>
 	<Target Name="UpdateModuleManifest" BeforeTargets="Build">
-		<Exec Command="pwsh -NoProfile -File 'Update-PwshModuleManifestVersion.ps1' -Version '$(VersionPrefix)' -PrereleaseVersion '$(VersionSuffix)'" />
+		<Exec Command="pwsh -NoProfile -File 'Update-PwshModuleManifestVersion.ps1' -Version '$(AssemblyVersion)' -PrereleaseVersion '$(VersionSuffix)'" />
 	</Target>
 	<Target Name="CreatePowerShellModule" AfterTargets="Publish">
 		<PropertyGroup>
